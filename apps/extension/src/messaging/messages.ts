@@ -7,18 +7,18 @@
 
 /** All message types used in the Sentinellium extension. */
 export enum MessageType {
-    SCAN_REQUEST = 'SCAN_REQUEST',
-    SCAN_RESULT = 'SCAN_RESULT',
-    ENGINE_STATE_CHANGED = 'ENGINE_STATE_CHANGED',
-    GET_ENGINE_STATE = 'GET_ENGINE_STATE',
-    BADGE_UPDATE = 'BADGE_UPDATE',
-    CAPABILITY_REPORT = 'CAPABILITY_REPORT',
+  SCAN_REQUEST = "SCAN_REQUEST",
+  SCAN_RESULT = "SCAN_RESULT",
+  ENGINE_STATE_CHANGED = "ENGINE_STATE_CHANGED",
+  GET_ENGINE_STATE = "GET_ENGINE_STATE",
+  BADGE_UPDATE = "BADGE_UPDATE",
+  CAPABILITY_REPORT = "CAPABILITY_REPORT",
 }
 
 /** Wire format for all extension messages. */
 interface Message<T = unknown> {
-    type: MessageType;
-    payload: T;
+  type: MessageType;
+  payload: T;
 }
 
 /**
@@ -26,11 +26,11 @@ interface Message<T = unknown> {
  * Used from popup or content script to reach the service worker.
  */
 export async function sendMessage<T = unknown, R = unknown>(
-    type: MessageType,
-    payload: T,
+  type: MessageType,
+  payload: T,
 ): Promise<R> {
-    const message: Message<T> = { type, payload };
-    return chrome.runtime.sendMessage(message) as Promise<R>;
+  const message: Message<T> = { type, payload };
+  return chrome.runtime.sendMessage(message) as Promise<R>;
 }
 
 /**
@@ -40,37 +40,37 @@ export async function sendMessage<T = unknown, R = unknown>(
  * @returns Unsubscribe function to remove the listener
  */
 export function onMessage<T = unknown>(
-    type: MessageType,
-    handler: (payload: T, sender: chrome.runtime.MessageSender) => void,
+  type: MessageType,
+  handler: (payload: T, sender: chrome.runtime.MessageSender) => void,
 ): () => void {
-    const listener = (
-        message: unknown,
-        sender: chrome.runtime.MessageSender,
-        _sendResponse: (response?: unknown) => void,
-    ) => {
-        const msg = message as Message<T>;
-        if (msg?.type === type) {
-            handler(msg.payload, sender);
-        }
-    };
+  const listener = (
+    message: unknown,
+    sender: chrome.runtime.MessageSender,
+    _sendResponse: (response?: unknown) => void,
+  ) => {
+    const msg = message as Message<T>;
+    if (msg?.type === type) {
+      handler(msg.payload, sender);
+    }
+  };
 
-    chrome.runtime.onMessage.addListener(listener);
+  chrome.runtime.onMessage.addListener(listener);
 
-    return () => {
-        chrome.runtime.onMessage.removeListener(listener);
-    };
+  return () => {
+    chrome.runtime.onMessage.removeListener(listener);
+  };
 }
 
 /**
  * Send a typed message to a specific tab's content script.
  */
 export async function sendToTab<T = unknown>(
-    tabId: number,
-    type: MessageType,
-    payload: T,
+  tabId: number,
+  type: MessageType,
+  payload: T,
 ): Promise<void> {
-    const message: Message<T> = { type, payload };
-    await chrome.tabs.sendMessage(tabId, message);
+  const message: Message<T> = { type, payload };
+  await chrome.tabs.sendMessage(tabId, message);
 }
 
 /**
@@ -78,25 +78,25 @@ export async function sendToTab<T = unknown>(
  * Tracks all registered listeners for clean disposal.
  */
 export function createMessageBus() {
-    const unsubscribers: Array<() => void> = [];
+  const unsubscribers: Array<() => void> = [];
 
-    return {
-        send: sendMessage,
+  return {
+    send: sendMessage,
 
-        on<T = unknown>(
-            type: MessageType,
-            handler: (payload: T, sender: chrome.runtime.MessageSender) => void,
-        ) {
-            const unsub = onMessage<T>(type, handler);
-            unsubscribers.push(unsub);
-            return unsub;
-        },
+    on<T = unknown>(
+      type: MessageType,
+      handler: (payload: T, sender: chrome.runtime.MessageSender) => void,
+    ) {
+      const unsub = onMessage<T>(type, handler);
+      unsubscribers.push(unsub);
+      return unsub;
+    },
 
-        destroy() {
-            for (const unsub of unsubscribers) {
-                unsub();
-            }
-            unsubscribers.length = 0;
-        },
-    };
+    destroy() {
+      for (const unsub of unsubscribers) {
+        unsub();
+      }
+      unsubscribers.length = 0;
+    },
+  };
 }

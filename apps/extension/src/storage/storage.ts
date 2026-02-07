@@ -9,16 +9,16 @@
 
 /** Available chrome.storage areas. */
 export enum StorageArea {
-    LOCAL = 'local',
-    SYNC = 'sync',
-    SESSION = 'session',
+  LOCAL = "local",
+  SYNC = "sync",
+  SESSION = "session",
 }
 
 /**
  * Returns the chrome.storage area object for the given enum value.
  */
 function getArea(area: StorageArea): chrome.storage.StorageArea {
-    return chrome.storage[area] as chrome.storage.StorageArea;
+  return chrome.storage[area] as chrome.storage.StorageArea;
 }
 
 /**
@@ -30,53 +30,53 @@ function getArea(area: StorageArea): chrome.storage.StorageArea {
  * @returns Object with get, set, clear, and subscribe methods
  */
 export function createStorage<T extends object>(
-    key: string,
-    defaults: T,
-    area: StorageArea = StorageArea.LOCAL,
+  key: string,
+  defaults: T,
+  area: StorageArea = StorageArea.LOCAL,
 ) {
-    const storageArea = getArea(area);
+  const storageArea = getArea(area);
 
-    async function get(): Promise<T> {
-        const result = await storageArea.get(key);
-        if (!(key in result)) {
-            return { ...defaults };
-        }
-
-        const stored = JSON.parse(result[key] as string) as Partial<T>;
-        return { ...defaults, ...stored };
+  async function get(): Promise<T> {
+    const result = await storageArea.get(key);
+    if (!(key in result)) {
+      return { ...defaults };
     }
 
-    async function set(partial: Partial<T>): Promise<void> {
-        const current = await get();
-        const merged = { ...current, ...partial };
-        await storageArea.set({ [key]: JSON.stringify(merged) });
-    }
+    const stored = JSON.parse(result[key] as string) as Partial<T>;
+    return { ...defaults, ...stored };
+  }
 
-    async function clear(): Promise<void> {
-        await storageArea.remove(key);
-    }
+  async function set(partial: Partial<T>): Promise<void> {
+    const current = await get();
+    const merged = { ...current, ...partial };
+    await storageArea.set({ [key]: JSON.stringify(merged) });
+  }
 
-    function subscribe(callback: (value: T) => void): () => void {
-        const listener = (
-            changes: Record<string, chrome.storage.StorageChange>,
-            areaName: string,
-        ) => {
-            if (areaName !== area || !(key in changes)) {
-                return;
-            }
-            const newValue = changes[key]?.newValue;
-            if (newValue !== undefined) {
-                const parsed = JSON.parse(newValue as string) as Partial<T>;
-                callback({ ...defaults, ...parsed });
-            }
-        };
+  async function clear(): Promise<void> {
+    await storageArea.remove(key);
+  }
 
-        chrome.storage.onChanged.addListener(listener);
+  function subscribe(callback: (value: T) => void): () => void {
+    const listener = (
+      changes: Record<string, chrome.storage.StorageChange>,
+      areaName: string,
+    ) => {
+      if (areaName !== area || !(key in changes)) {
+        return;
+      }
+      const newValue = changes[key]?.newValue;
+      if (newValue !== undefined) {
+        const parsed = JSON.parse(newValue as string) as Partial<T>;
+        callback({ ...defaults, ...parsed });
+      }
+    };
 
-        return () => {
-            chrome.storage.onChanged.removeListener(listener);
-        };
-    }
+    chrome.storage.onChanged.addListener(listener);
 
-    return { get, set, clear, subscribe };
+    return () => {
+      chrome.storage.onChanged.removeListener(listener);
+    };
+  }
+
+  return { get, set, clear, subscribe };
 }
