@@ -24,11 +24,11 @@ sentinellium/
 
 ## Core Engines
 
-| Engine | Purpose | Technology |
-|--------|---------|------------|
-| **Context Engine** | Real-time semantic phishing detection | ONNX Runtime Web + WebGPU |
-| **Provenance Engine** | C2PA deepfake defense and media verification | C2PA JS SDK |
-| **DLP Engine** | Shadow AI data leakage prevention | Microsoft Presidio (WASM) |
+| Engine                | Purpose                                      | Technology                |
+| --------------------- | -------------------------------------------- | ------------------------- |
+| **Context Engine**    | Real-time semantic phishing detection        | ONNX Runtime Web + WebGPU |
+| **Provenance Engine** | C2PA deepfake defense and media verification | C2PA JS SDK               |
+| **DLP Engine**        | Shadow AI data leakage prevention            | Microsoft Presidio (WASM) |
 
 ## Quick Start
 
@@ -54,17 +54,17 @@ pnpm ci
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Extension Framework | WXT (Vite-based) |
-| Extension UI | React 19 + TypeScript |
-| AI Inference | ONNX Runtime Web (WebGPU) |
-| Enterprise Console | Next.js 15 (App Router) |
-| API | Hono + tRPC |
-| Database | Prisma + PostgreSQL |
-| Styling | Tailwind CSS 4 |
-| Testing | Vitest + Playwright |
-| Monorepo | Turborepo + pnpm |
+| Layer               | Technology                |
+| ------------------- | ------------------------- |
+| Extension Framework | WXT (Vite-based)          |
+| Extension UI        | React 19 + TypeScript     |
+| AI Inference        | ONNX Runtime Web (WebGPU) |
+| Enterprise Console  | Next.js 15 (App Router)   |
+| API                 | Hono + tRPC               |
+| Database            | Prisma + PostgreSQL       |
+| Styling             | Tailwind CSS 4            |
+| Testing             | Vitest + Playwright       |
+| Monorepo            | Turborepo + pnpm          |
 
 ## Development
 
@@ -73,6 +73,7 @@ This project follows **strict Test-Driven Development** (TDD). Every feature beg
 ### Branch Protection
 
 All PRs to `main` require:
+
 - All CI checks passing (lint, typecheck, test, build)
 - CodeQL security scan passing
 

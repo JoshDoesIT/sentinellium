@@ -3,7 +3,7 @@
 ## Supported Versions
 
 | Version | Supported          |
-|---------|-------------------|
+| ------- | ------------------ |
 | 0.x.x   | :white_check_mark: |
 
 ## Reporting a Vulnerability
@@ -13,6 +13,7 @@
 Instead, please report security vulnerabilities via [GitHub Security Advisories](https://github.com/JoshDoesIT/sentinellium/security/advisories/new).
 
 Include:
+
 - Description of the vulnerability
 - Steps to reproduce
 - Potential impact

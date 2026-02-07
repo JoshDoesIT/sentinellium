@@ -7,33 +7,33 @@
 
 /** Support level for a browser capability. */
 export enum SupportLevel {
-    /** API present, adapter/context available, ready for inference. */
-    FULL = 'FULL',
-    /** API present but no usable adapter/context. */
-    PARTIAL = 'PARTIAL',
-    /** API not available in this browser/environment. */
-    NONE = 'NONE',
+  /** API present, adapter/context available, ready for inference. */
+  FULL = "FULL",
+  /** API present but no usable adapter/context. */
+  PARTIAL = "PARTIAL",
+  /** API not available in this browser/environment. */
+  NONE = "NONE",
 }
 
 /** Adapter info returned from WebGPU detection. */
 interface AdapterInfo {
-    vendor: string;
-    architecture: string;
+  vendor: string;
+  architecture: string;
 }
 
 /** Result from detecting a single capability. */
 interface DetectionResult {
-    level: SupportLevel;
-    adapter?: AdapterInfo;
-    error?: string;
+  level: SupportLevel;
+  adapter?: AdapterInfo;
+  error?: string;
 }
 
 /** Combined report of all hardware capabilities. */
 export interface CapabilityReport {
-    webgpu: DetectionResult;
-    webnn: DetectionResult;
-    canRunInference: boolean;
-    timestamp: number;
+  webgpu: DetectionResult;
+  webnn: DetectionResult;
+  canRunInference: boolean;
+  timestamp: number;
 }
 
 /**
@@ -42,38 +42,42 @@ export interface CapabilityReport {
  * but no adapter is available, and NONE if the API is missing.
  */
 export async function detectWebGPU(): Promise<DetectionResult> {
-    const gpu = (navigator as unknown as { gpu?: { requestAdapter: () => Promise<unknown | null> } }).gpu;
+  const gpu = (
+    navigator as unknown as {
+      gpu?: { requestAdapter: () => Promise<unknown | null> };
+    }
+  ).gpu;
 
-    if (!gpu) {
-        return { level: SupportLevel.NONE };
+  if (!gpu) {
+    return { level: SupportLevel.NONE };
+  }
+
+  try {
+    const adapter = await gpu.requestAdapter();
+
+    if (!adapter) {
+      return { level: SupportLevel.PARTIAL };
     }
 
-    try {
-        const adapter = await gpu.requestAdapter();
+    const info = await (
+      adapter as unknown as {
+        requestAdapterInfo: () => Promise<AdapterInfo>;
+      }
+    ).requestAdapterInfo();
 
-        if (!adapter) {
-            return { level: SupportLevel.PARTIAL };
-        }
-
-        const info = await (
-            adapter as unknown as {
-                requestAdapterInfo: () => Promise<AdapterInfo>;
-            }
-        ).requestAdapterInfo();
-
-        return {
-            level: SupportLevel.FULL,
-            adapter: {
-                vendor: info.vendor,
-                architecture: info.architecture,
-            },
-        };
-    } catch (err) {
-        return {
-            level: SupportLevel.NONE,
-            error: err instanceof Error ? err.message : String(err),
-        };
-    }
+    return {
+      level: SupportLevel.FULL,
+      adapter: {
+        vendor: info.vendor,
+        architecture: info.architecture,
+      },
+    };
+  } catch (err) {
+    return {
+      level: SupportLevel.NONE,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
 }
 
 /**
@@ -81,21 +85,23 @@ export async function detectWebGPU(): Promise<DetectionResult> {
  * Returns FULL if context creation succeeds, NONE otherwise.
  */
 export async function detectWebNN(): Promise<DetectionResult> {
-    const ml = (navigator as unknown as { ml?: { createContext: () => Promise<unknown> } }).ml;
+  const ml = (
+    navigator as unknown as { ml?: { createContext: () => Promise<unknown> } }
+  ).ml;
 
-    if (!ml) {
-        return { level: SupportLevel.NONE };
-    }
+  if (!ml) {
+    return { level: SupportLevel.NONE };
+  }
 
-    try {
-        await ml.createContext();
-        return { level: SupportLevel.FULL };
-    } catch (err) {
-        return {
-            level: SupportLevel.NONE,
-            error: err instanceof Error ? err.message : String(err),
-        };
-    }
+  try {
+    await ml.createContext();
+    return { level: SupportLevel.FULL };
+  } catch (err) {
+    return {
+      level: SupportLevel.NONE,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
 }
 
 /**
@@ -103,12 +109,12 @@ export async function detectWebNN(): Promise<DetectionResult> {
  * Inference is possible if at least WebGPU has FULL support.
  */
 export async function getCapabilityReport(): Promise<CapabilityReport> {
-    const [webgpu, webnn] = await Promise.all([detectWebGPU(), detectWebNN()]);
+  const [webgpu, webnn] = await Promise.all([detectWebGPU(), detectWebNN()]);
 
-    return {
-        webgpu,
-        webnn,
-        canRunInference: webgpu.level === SupportLevel.FULL,
-        timestamp: Date.now(),
-    };
+  return {
+    webgpu,
+    webnn,
+    canRunInference: webgpu.level === SupportLevel.FULL,
+    timestamp: Date.now(),
+  };
 }
