@@ -1,0 +1,1 @@
+{"manifest_version":3,"name":"Sentinellium","description":"The Client-Side, Privacy-Preserving AI Defense Grid","version":"0.1.0","permissions":["activeTab","storage","scripting"],"host_permissions":["<all_urls>"],"background":{"service_worker":"background.js"}}
