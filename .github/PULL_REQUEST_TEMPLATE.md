@@ -21,6 +21,7 @@ Please ensure you have completed the following before submitting:
 - [ ] I have written tests first (TDD: Red, Green, Refactor)
 - [ ] I have rebased on the latest `main` branch
 - [ ] I have run `pnpm run lint` with no errors
+- [ ] I have run `pnpm run format:check` with no errors
 - [ ] I have run `pnpm run check-types` with no errors
 - [ ] I have run `pnpm run test:run` and all tests pass
 - [ ] I have performed a self-review of my code
