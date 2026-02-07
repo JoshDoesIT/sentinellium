@@ -1,0 +1,365 @@
+/*
+ * Sentinellium Options Page — Design System
+ * ------------------------------------------
+ * Reuses the same brand tokens as the popup. Extended layout
+ * for a full-page settings experience with sections, sliders,
+ * and grouped controls.
+ */
+
+/* ── Fonts ── */
+@import url("https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* ── Design Tokens (shared with popup) ── */
+:root {
+  /* Core Identity */
+  --sentinel-cyan: hsl(192, 100%, 55%);
+  --sentinel-cyan-glow: hsl(192, 100%, 65%);
+  --sentinel-cyan-dim: hsl(192, 60%, 35%);
+
+  /* Dark Foundation */
+  --void-black: hsl(220, 25%, 6%);
+  --obsidian: hsl(220, 20%, 10%);
+  --graphite: hsl(220, 15%, 15%);
+  --slate: hsl(220, 10%, 25%);
+
+  /* Text Hierarchy */
+  --sentinel-white: hsl(210, 20%, 95%);
+  --ash: hsl(210, 10%, 65%);
+  --smoke: hsl(210, 8%, 45%);
+
+  /* Severity */
+  --severity-critical: hsl(0, 85%, 55%);
+  --severity-high: hsl(25, 95%, 55%);
+  --severity-medium: hsl(45, 90%, 55%);
+  --severity-low: hsl(160, 60%, 45%);
+
+  /* Status */
+  --status-verified: hsl(145, 70%, 50%);
+  --status-scanning: var(--sentinel-cyan);
+
+  /* Gradients */
+  --gradient-plasma: linear-gradient(
+    135deg,
+    hsl(192, 100%, 55%) 0%,
+    hsl(260, 80%, 60%) 100%
+  );
+  --gradient-mesh:
+    radial-gradient(
+      ellipse at 20% 80%,
+      hsla(192, 100%, 55%, 0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 20%,
+      hsla(260, 80%, 60%, 0.04) 0%,
+      transparent 50%
+    );
+
+  /* Typography */
+  --font-display: "Clash Display", system-ui, sans-serif;
+  --font-body: "Satoshi", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Motion */
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Base ── */
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--sentinel-white);
+  background: var(--void-black);
+  background-image: var(--gradient-mesh);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ── Options Layout ── */
+.options {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+/* ── Header ── */
+.options-header {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--slate);
+}
+
+.options-header__brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.01em;
+  background: var(--gradient-plasma);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.options-header__subtitle {
+  font-size: var(--text-sm);
+  color: var(--ash);
+  margin-top: var(--space-1);
+}
+
+/* ── Section ── */
+.settings-section {
+  margin-bottom: var(--space-8);
+}
+
+.settings-section__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  color: var(--sentinel-white);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--graphite);
+}
+
+/* ── Setting Row ── */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  background: var(--obsidian);
+  border: 1px solid var(--graphite);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-3);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.setting-row:hover {
+  border-color: var(--slate);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.setting-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  margin-right: var(--space-4);
+}
+
+.setting-row__label {
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--sentinel-white);
+}
+
+.setting-row__description {
+  font-size: var(--text-xs);
+  color: var(--ash);
+  line-height: 1.4;
+}
+
+/* ── Toggle Switch (same as popup) ── */
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle__track {
+  position: absolute;
+  inset: 0;
+  background: var(--graphite);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.toggle__track::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 3px;
+  top: 3px;
+  background: var(--ash);
+  border-radius: 50%;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.toggle input:checked + .toggle__track {
+  background: var(--sentinel-cyan-dim);
+}
+
+.toggle input:checked + .toggle__track::after {
+  transform: translateX(18px);
+  background: var(--sentinel-cyan);
+}
+
+.toggle input:focus-visible + .toggle__track {
+  outline: 2px solid var(--sentinel-cyan);
+  outline-offset: 2px;
+}
+
+/* ── Slider ── */
+.slider-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.slider-control__input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--graphite);
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-control__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--sentinel-cyan);
+  cursor: pointer;
+  transition: box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.slider-control__input::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 4px hsla(192, 100%, 55%, 0.2);
+}
+
+.slider-control__input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--sentinel-cyan);
+  outline-offset: 2px;
+}
+
+.slider-control__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ash);
+  text-align: right;
+}
+
+/* ── Footer ── */
+.options-footer {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--graphite);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.options-footer__version {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--smoke);
+}
+
+.options-footer__reset {
+  font-size: var(--text-xs);
+  color: var(--severity-critical);
+  background: none;
+  border: 1px solid hsla(0, 85%, 55%, 0.3);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.options-footer__reset:hover {
+  background: hsla(0, 85%, 55%, 0.08);
+  border-color: var(--severity-critical);
+}
+
+.options-footer__reset:focus-visible {
+  outline: 2px solid var(--severity-critical);
+  outline-offset: 2px;
+}
+
+/* ── Save Toast ── */
+.save-toast {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  background: var(--obsidian);
+  border: 1px solid var(--status-verified);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--status-verified);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out);
+}
+
+.save-toast--hidden {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
