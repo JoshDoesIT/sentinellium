@@ -1,0 +1,26 @@
+# CODEOWNERS — Sentinellium
+# These owners will be automatically requested for review
+# when someone opens a pull request that modifies code they own.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo
+* @JoshDoesIT
+
+# Extension (browser extension core)
+/apps/extension/ @JoshDoesIT
+
+# Enterprise Console
+/apps/console/ @JoshDoesIT
+
+# API Service
+/services/api/ @JoshDoesIT
+
+# Shared Types
+/packages/types/ @JoshDoesIT
+
+# CI/CD and GitHub configuration
+/.github/ @JoshDoesIT
+
+# Security-sensitive files — always require owner review
+/SECURITY.md @JoshDoesIT
+/LICENSE @JoshDoesIT
