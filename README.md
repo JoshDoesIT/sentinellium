@@ -1,135 +1,82 @@
-# Turborepo starter
+# Sentinellium
 
-This Turborepo starter is maintained by the Turborepo core team.
+> **The Client-Side, Privacy-Preserving AI Defense Grid**
 
-## Using this example
+A WebGPU-accelerated browser extension that runs AI security inference directly on the user's GPU — zero cloud, zero latency, absolute privacy. Paired with an enterprise management console for fleet-wide threat visibility.
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## Architecture
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+sentinellium/
+├── apps/
+│   ├── extension/     # Chrome/Edge extension (WXT + React 19)
+│   ├── console/       # Enterprise dashboard (Next.js 15)
+│   └── docs/          # Documentation site
+├── packages/
+│   ├── types/         # Shared TypeScript types
+│   ├── ui/            # Shared UI components
+│   ├── eslint-config/ # Shared ESLint configuration
+│   └── typescript-config/ # Shared TS configuration
+├── services/
+│   └── api/           # Backend API (Hono + tRPC)
+└── docs/              # Reference documents
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Core Engines
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+| Engine | Purpose | Technology |
+|--------|---------|------------|
+| **Context Engine** | Real-time semantic phishing detection | ONNX Runtime Web + WebGPU |
+| **Provenance Engine** | C2PA deepfake defense & media verification | C2PA JS SDK |
+| **DLP Engine** | Shadow AI data leakage prevention | Microsoft Presidio (WASM) |
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Quick Start
 
-### Develop
+```bash
+# Install dependencies
+pnpm install
 
-To develop all apps and packages, run the following command:
+# Start all services in development
+pnpm dev
 
-```
-cd my-turborepo
+# Run tests (TDD — always test first)
+pnpm test:run
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+# Type check
+pnpm check-types
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+# Lint
+pnpm lint
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# Full CI pipeline
+pnpm ci
 ```
 
-### Remote Caching
+## Tech Stack
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+| Layer | Technology |
+|-------|-----------|
+| Extension Framework | WXT (Vite-based) |
+| Extension UI | React 19 + TypeScript |
+| AI Inference | ONNX Runtime Web (WebGPU) |
+| Enterprise Console | Next.js 15 (App Router) |
+| API | Hono + tRPC |
+| Database | Prisma + PostgreSQL |
+| Styling | Tailwind CSS 4 |
+| Testing | Vitest + Playwright |
+| Monorepo | Turborepo + pnpm |
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## Development
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+This project follows **strict Test-Driven Development** (TDD). Every feature begins with a failing test. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full development workflow.
 
-```
-cd my-turborepo
+### Branch Protection
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+All PRs to `main` require:
+- ✅ All CI checks passing (lint, typecheck, test, build)
+- ✅ CodeQL security scan passing
+- ✅ At least 1 approval
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
+## License
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+MIT

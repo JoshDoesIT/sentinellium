@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@sentinellium/console",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -8,10 +8,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
-    "check-types": "next typegen && tsc --noEmit"
+    "check-types": "next typegen && tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "@sentinellium/types": "workspace:*",
     "next": "16.1.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
