@@ -18,7 +18,7 @@ Fixes # (issue number)
 
 Please ensure you have completed the following before submitting:
 
-- [ ] I have written tests first (TDD — Red → Green → Refactor)
+- [ ] I have written tests first (TDD: Red, Green, Refactor)
 - [ ] I have rebased on the latest `main` branch
 - [ ] I have run `pnpm run lint` with no errors
 - [ ] I have run `pnpm run check-types` with no errors

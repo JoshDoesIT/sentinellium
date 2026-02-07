@@ -1,6 +1,6 @@
 # Contributing to Sentinellium
 
-Thank you for contributing to Sentinellium! This document outlines our development workflow and standards.
+Thank you for contributing to Sentinellium. This document outlines the development workflow, coding standards, and expectations for all contributors.
 
 ## Development Philosophy
 
@@ -14,11 +14,11 @@ NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
 
 Every feature, bug fix, and refactor follows the Red-Green-Refactor cycle:
 
-1. **RED** — Write a failing test that describes the desired behavior
-2. **Verify RED** — Run the test, confirm it fails for the right reason
-3. **GREEN** — Write the minimal code to make the test pass
-4. **Verify GREEN** — Run all tests, confirm everything passes
-5. **REFACTOR** — Clean up while keeping tests green
+1. **RED**: Write a failing test that describes the desired behavior
+2. **Verify RED**: Run the test and confirm it fails for the right reason
+3. **GREEN**: Write the minimal code to make the test pass
+4. **Verify GREEN**: Run all tests and confirm everything passes
+5. **REFACTOR**: Clean up while keeping tests green
 
 ### Running Tests
 
@@ -38,10 +38,10 @@ pnpm ci
 
 ## Branch Strategy
 
-- `main` — Protected. Requires passing CI and review.
-- `feat/<description>` — New features
-- `fix/<description>` — Bug fixes
-- `ref/<description>` — Refactoring
+- `main`: Protected. Requires passing CI checks.
+- `feat/<description>`: New features
+- `fix/<description>`: Bug fixes
+- `ref/<description>`: Refactoring
 
 ### Commit Messages
 
@@ -59,11 +59,11 @@ Types: `feat`, `fix`, `ref`, `perf`, `docs`, `test`, `build`, `ci`, `chore`
 
 ## Code Quality
 
-- **TypeScript strict mode** — No `any`, no implicit returns
-- **ESLint** — Enforced on all TypeScript files
-- **Prettier** — Enforced formatting
-- **Coverage** — Minimum 90% across branches, functions, lines, statements
-- **Security** — CodeQL and dependency audit on every PR
+- **TypeScript strict mode**: No `any` types, no implicit returns
+- **ESLint**: Enforced on all TypeScript files
+- **Prettier**: Enforced formatting
+- **Coverage**: Minimum 90% across branches, functions, lines, and statements
+- **Security**: CodeQL and dependency audit on every PR
 
 ## Pull Request Checklist
 

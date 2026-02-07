@@ -2,7 +2,7 @@
 
 > **The Client-Side, Privacy-Preserving AI Defense Grid**
 
-A WebGPU-accelerated browser extension that runs AI security inference directly on the user's GPU — zero cloud, zero latency, absolute privacy. Paired with an enterprise management console for fleet-wide threat visibility.
+A WebGPU-accelerated browser extension that runs AI security inference directly on the user's GPU. There is no cloud dependency, no added latency, and complete privacy. It is paired with an enterprise management console for fleet-wide threat visibility.
 
 ## Architecture
 
@@ -27,7 +27,7 @@ sentinellium/
 | Engine | Purpose | Technology |
 |--------|---------|------------|
 | **Context Engine** | Real-time semantic phishing detection | ONNX Runtime Web + WebGPU |
-| **Provenance Engine** | C2PA deepfake defense & media verification | C2PA JS SDK |
+| **Provenance Engine** | C2PA deepfake defense and media verification | C2PA JS SDK |
 | **DLP Engine** | Shadow AI data leakage prevention | Microsoft Presidio (WASM) |
 
 ## Quick Start
@@ -39,7 +39,7 @@ pnpm install
 # Start all services in development
 pnpm dev
 
-# Run tests (TDD — always test first)
+# Run tests (TDD, always test first)
 pnpm test:run
 
 # Type check
@@ -73,9 +73,8 @@ This project follows **strict Test-Driven Development** (TDD). Every feature beg
 ### Branch Protection
 
 All PRs to `main` require:
-- ✅ All CI checks passing (lint, typecheck, test, build)
-- ✅ CodeQL security scan passing
-- ✅ At least 1 approval
+- All CI checks passing (lint, typecheck, test, build)
+- CodeQL security scan passing
 
 ## License
 
