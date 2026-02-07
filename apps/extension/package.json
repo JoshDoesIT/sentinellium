@@ -1,0 +1,32 @@
+{
+    "name": "@sentinellium/extension",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "wxt",
+        "build": "wxt build",
+        "build:firefox": "wxt build --browser firefox",
+        "zip": "wxt zip",
+        "zip:firefox": "wxt zip --browser firefox",
+        "check-types": "tsc --noEmit",
+        "lint": "eslint .",
+        "test": "vitest",
+        "test:run": "vitest run"
+    },
+    "dependencies": {
+        "@sentinellium/types": "workspace:*",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
+    },
+    "devDependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "@wxt-dev/module-react": "^1.1.5",
+        "eslint": "^9.39.1",
+        "typescript": "5.9.2",
+        "vitest": "^3.0.0",
+        "wxt": "^0.20.0"
+    }
+}

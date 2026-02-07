@@ -1,0 +1,28 @@
+{
+    "name": "@sentinellium/api",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "build": "tsup src/index.ts --format esm",
+        "check-types": "tsc --noEmit",
+        "lint": "eslint .",
+        "test": "vitest",
+        "test:run": "vitest run"
+    },
+    "dependencies": {
+        "@hono/zod-validator": "^0.4.0",
+        "@sentinellium/types": "workspace:*",
+        "hono": "^4.7.0",
+        "zod": "^3.24.0"
+    },
+    "devDependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "eslint": "^9.39.1",
+        "tsup": "^8.4.0",
+        "tsx": "^4.19.0",
+        "typescript": "5.9.2",
+        "vitest": "^3.0.0"
+    }
+}

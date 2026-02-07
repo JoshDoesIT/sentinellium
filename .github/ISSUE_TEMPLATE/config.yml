@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🛡️ Report a Security Vulnerability
+    url: https://github.com/JoshDoesIT/sentinellium/security/advisories/new
+    about: Please use private vulnerability reporting for security concerns. Do NOT open a public issue.
+  - name: 💬 Ask a Question
+    url: https://github.com/JoshDoesIT/sentinellium/discussions
+    about: For general questions, help, and community discussion.
