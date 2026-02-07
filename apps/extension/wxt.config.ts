@@ -5,7 +5,18 @@ export default defineConfig({
     manifest: {
         name: 'Sentinellium',
         description: 'The Client-Side, Privacy-Preserving AI Defense Grid',
-        permissions: ['activeTab', 'storage', 'scripting'],
+        minimum_chrome_version: '113',
+        permissions: [
+            'activeTab',
+            'storage',
+            'scripting',
+            'notifications',
+            'sidePanel',
+        ],
         host_permissions: ['<all_urls>'],
+        content_security_policy: {
+            extension_pages:
+                "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';",
+        },
     },
 });
