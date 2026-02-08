@@ -1,0 +1,186 @@
+/*
+ * Sentinellium Warning Overlay — Shadow DOM Styles
+ * ─────────────────────────────────────────────────
+ * Injected into a Shadow DOM root attached to the host page.
+ * All styles are scoped — no leakage to/from the host.
+ *
+ * Uses CSS custom properties set inline by the WarningOverlay
+ * builder: --accent, --bg, --text (severity-dependent).
+ */
+
+/* ── Base ── */
+
+.sentinellium-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2147483647;
+  font-family:
+    "Inter",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text, #1a1a1a);
+  animation: sentinellium-slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes sentinellium-slide-in {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Banner ── */
+
+.sentinellium-banner {
+  margin: 12px;
+  padding: 16px 20px;
+  background: var(--bg, rgba(255, 255, 255, 0.95));
+  border: 1px solid var(--accent, #f59e0b);
+  border-left: 4px solid var(--accent, #f59e0b);
+  border-radius: 12px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Header ── */
+
+.sentinellium-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.sentinellium-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.sentinellium-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text, #1a1a1a);
+  letter-spacing: -0.01em;
+}
+
+/* ── Body ── */
+
+.sentinellium-body {
+  margin-bottom: 12px;
+}
+
+.sentinellium-domain,
+.sentinellium-score {
+  margin: 4px 0;
+  font-size: 13px;
+}
+
+.sentinellium-domain strong,
+.sentinellium-score strong {
+  font-weight: 600;
+  color: var(--accent, #f59e0b);
+}
+
+/* ── Signals ── */
+
+.sentinellium-signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+
+.sentinellium-signal {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text, #1a1a1a);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  font-family: "SF Mono", "Fira Code", monospace;
+}
+
+/* ── Actions ── */
+
+.sentinellium-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sentinellium-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.sentinellium-btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent, #f59e0b);
+}
+
+.sentinellium-btn--primary {
+  background: var(--accent, #f59e0b);
+  color: #fff;
+}
+
+.sentinellium-btn--primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.sentinellium-btn--secondary {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text, #1a1a1a);
+}
+
+.sentinellium-btn--secondary:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.sentinellium-btn--danger {
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+  font-size: 12px;
+}
+
+.sentinellium-btn--danger:hover {
+  background: rgba(220, 38, 38, 0.06);
+}
+
+/* ── Footer ── */
+
+.sentinellium-footer {
+  margin: 10px 0 0;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.sentinellium-footer strong {
+  color: var(--accent, #f59e0b);
+  font-weight: 600;
+}
