@@ -5,10 +5,7 @@
  * with valid C2PA manifests.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  VerifiedOverlay,
-  BadgeType,
-} from "./verified-overlay";
+import { VerifiedOverlay, BadgeType } from "./verified-overlay";
 
 describe("Verified Overlay", () => {
   let overlay: VerifiedOverlay;
