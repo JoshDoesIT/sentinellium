@@ -16,7 +16,6 @@ function makeEvent(
     category: TelemetryCategory.SCAN,
     action: "page_scanned",
     engine: "phishing",
-    timestamp: overrides.timestamp,
     ...overrides,
   };
 }
@@ -87,7 +86,7 @@ describe("MetricAggregator", () => {
       ]);
 
       const buckets = aggregator.aggregate(TimeBucket.HOURLY);
-      expect(buckets[0].count).toBe(3);
+      expect(buckets[0]!.count).toBe(3);
     });
 
     it("returns empty array when no events ingested", () => {

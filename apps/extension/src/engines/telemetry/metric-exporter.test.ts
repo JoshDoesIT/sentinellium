@@ -103,7 +103,7 @@ describe("MetricExporter", () => {
       ]);
       await exporter.flush();
 
-      const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+      const body = JSON.parse(mockFetch.mock.calls[0]![1].body);
       expect(body.metrics).toHaveLength(2);
       expect(body.metrics[0].action).toBe("a");
       expect(body.metrics[1].action).toBe("b");

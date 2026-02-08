@@ -29,8 +29,8 @@ describe("ReportScheduler", () => {
       expect(id).toBeTruthy();
       const schedules = scheduler.listSchedules();
       expect(schedules).toHaveLength(1);
-      expect(schedules[0].name).toBe("Daily Digest");
-      expect(schedules[0].frequency).toBe(ScheduleFrequency.DAILY);
+      expect(schedules[0]!.name).toBe("Daily Digest");
+      expect(schedules[0]!.frequency).toBe(ScheduleFrequency.DAILY);
     });
 
     it("creates a weekly report schedule", () => {
@@ -136,7 +136,7 @@ describe("ReportScheduler", () => {
 
       const due = scheduler.getDueSchedules();
       expect(due).toHaveLength(1);
-      expect(due[0].name).toBe("Daily Digest");
+      expect(due[0]!.name).toBe("Daily Digest");
 
       vi.useRealTimers();
     });

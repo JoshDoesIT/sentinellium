@@ -111,8 +111,8 @@ describe("RetentionManager", () => {
 
       const retained = small.enforceQuota(events);
       expect(retained).toHaveLength(3);
-      expect(retained[0].action).toBe("third");
-      expect(retained[2].action).toBe("fifth");
+      expect(retained[0]!.action).toBe("third");
+      expect(retained[2]!.action).toBe("fifth");
     });
 
     it("returns all events when under quota", () => {
@@ -156,8 +156,8 @@ describe("RetentionManager", () => {
       const retained = small.cleanup(events);
       // Expired event removed by TTL, then quota trims to 2
       expect(retained).toHaveLength(2);
-      expect(retained[0].action).toBe("recent2");
-      expect(retained[1].action).toBe("newest");
+      expect(retained[0]!.action).toBe("recent2");
+      expect(retained[1]!.action).toBe("newest");
 
       vi.useRealTimers();
     });

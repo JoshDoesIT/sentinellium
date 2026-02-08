@@ -52,8 +52,8 @@ describe("TelemetryCollector", () => {
 
       const pending = collector.drain();
       expect(pending).toHaveLength(1);
-      expect(pending[0].category).toBe(TelemetryCategory.DETECTION);
-      expect(pending[0].metadata).toEqual({ score: 85, riskLevel: "HIGH" });
+      expect(pending[0]!.category).toBe(TelemetryCategory.DETECTION);
+      expect(pending[0]!.metadata).toEqual({ score: 85, riskLevel: "HIGH" });
     });
 
     it("adds timestamps to recorded events", async () => {
@@ -66,8 +66,8 @@ describe("TelemetryCollector", () => {
       });
 
       const pending = collector.drain();
-      expect(pending[0].timestamp).toBeGreaterThanOrEqual(before);
-      expect(pending[0].timestamp).toBeLessThanOrEqual(Date.now());
+      expect(pending[0]!.timestamp).toBeGreaterThanOrEqual(before);
+      expect(pending[0]!.timestamp).toBeLessThanOrEqual(Date.now());
     });
 
     it("drains all pending events and clears the queue", async () => {
@@ -111,8 +111,8 @@ describe("TelemetryCollector", () => {
 
       const pending = small.drain();
       expect(pending).toHaveLength(2);
-      expect(pending[0].action).toBe("second");
-      expect(pending[1].action).toBe("third");
+      expect(pending[0]!.action).toBe("second");
+      expect(pending[1]!.action).toBe("third");
     });
 
     it("records engine latency events", async () => {
@@ -124,8 +124,8 @@ describe("TelemetryCollector", () => {
       });
 
       const pending = collector.drain();
-      expect(pending[0].category).toBe(TelemetryCategory.PERFORMANCE);
-      expect(pending[0].metadata?.durationMs).toBe(142);
+      expect(pending[0]!.category).toBe(TelemetryCategory.PERFORMANCE);
+      expect(pending[0]!.metadata?.durationMs).toBe(142);
     });
   });
 

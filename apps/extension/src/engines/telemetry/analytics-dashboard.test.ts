@@ -16,7 +16,6 @@ function makeEvent(
     category: TelemetryCategory.SCAN,
     action: "page_scanned",
     engine: "phishing",
-    timestamp: overrides.timestamp,
     ...overrides,
   };
 }
@@ -45,8 +44,8 @@ describe("AnalyticsDashboard", () => {
 
       const trend = dashboard.getTrendLine();
       expect(trend.length).toBeGreaterThanOrEqual(2);
-      expect(trend[0].timestamp).toBeLessThan(
-        trend[trend.length - 1].timestamp,
+      expect(trend[0]!.timestamp).toBeLessThan(
+        trend[trend.length - 1]!.timestamp,
       );
     });
 
@@ -143,8 +142,8 @@ describe("AnalyticsDashboard", () => {
       ]);
 
       const breakdown = dashboard.getCategoryBreakdown();
-      expect(breakdown[0].category).toBe(TelemetryCategory.SCAN);
-      expect(breakdown[0].count).toBe(3);
+      expect(breakdown[0]!.category).toBe(TelemetryCategory.SCAN);
+      expect(breakdown[0]!.count).toBe(3);
     });
   });
 });
