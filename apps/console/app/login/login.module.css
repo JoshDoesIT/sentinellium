@@ -1,0 +1,196 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--void-black);
+  background-image:
+    radial-gradient(
+      ellipse at 30% 70%,
+      hsla(192, 100%, 55%, 0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 70% 30%,
+      hsla(260, 80%, 60%, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      hsla(192, 100%, 55%, 0.02) 0%,
+      transparent 70%
+    );
+  padding: var(--space-8);
+}
+
+.login-card {
+  width: 420px;
+  max-width: 100%;
+  padding: var(--space-8);
+  background: hsla(220, 20%, 10%, 0.85);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--slate);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  animation: fade-in var(--duration-normal) var(--ease-out) both;
+}
+
+.login-card__logo {
+  border-radius: var(--radius-md);
+}
+
+.login-card__wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.01em;
+  background: var(--gradient-plasma);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-card__tagline {
+  font-size: var(--text-xs);
+  color: var(--smoke);
+  text-align: center;
+  margin-top: calc(-1 * var(--space-4));
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.login-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.login-form__label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--smoke);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.login-form__submit {
+  width: 100%;
+  justify-content: center;
+  padding: var(--space-3);
+  font-weight: 600;
+  margin-top: var(--space-2);
+}
+
+.login-form__remember {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--ash);
+}
+
+.login-form__remember input[type="checkbox"] {
+  accent-color: var(--sentinel-cyan);
+}
+
+/* ── MFA Step ── */
+.mfa-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  animation: fade-in var(--duration-normal) var(--ease-out) both;
+}
+
+.mfa-section__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  color: var(--sentinel-white);
+}
+
+.mfa-section__desc {
+  font-size: var(--text-xs);
+  color: var(--smoke);
+  text-align: center;
+}
+
+.mfa-digits {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+.mfa-digit {
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  color: var(--sentinel-white);
+  background: var(--graphite);
+  border: 1px solid var(--slate);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.mfa-digit:focus {
+  border-color: var(--sentinel-cyan);
+  box-shadow: 0 0 0 3px hsla(192, 100%, 55%, 0.15);
+  outline: none;
+}
+
+/* ── SSO ── */
+.sso-divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--smoke);
+  font-size: var(--text-xs);
+}
+
+.sso-divider::before,
+.sso-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--slate);
+}
+
+.sso-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ── Error ── */
+.login-error {
+  width: 100%;
+  padding: var(--space-3);
+  background: hsla(0, 85%, 55%, 0.08);
+  border: 1px solid hsla(0, 85%, 55%, 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--severity-critical);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+/* ── Session Notice ── */
+.session-notice {
+  font-size: 10px;
+  color: var(--smoke);
+  text-align: center;
+}

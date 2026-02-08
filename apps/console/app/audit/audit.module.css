@@ -1,0 +1,81 @@
+.audit-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.audit-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.audit-toolbar__search {
+  max-width: 240px;
+}
+
+.action-badge {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+.action-badge--login {
+  background: hsla(192, 100%, 55%, 0.1);
+  color: var(--sentinel-cyan);
+}
+
+.action-badge--login_failed {
+  background: hsla(0, 85%, 55%, 0.12);
+  color: var(--severity-critical);
+}
+
+.action-badge--logout {
+  background: hsla(210, 10%, 65%, 0.1);
+  color: var(--ash);
+}
+
+.action-badge--config_change {
+  background: hsla(260, 80%, 60%, 0.1);
+  color: hsl(260, 80%, 65%);
+}
+
+.action-badge--alert_dismissed {
+  background: hsla(45, 90%, 55%, 0.1);
+  color: var(--severity-medium);
+}
+
+.action-badge--report_exported {
+  background: hsla(145, 70%, 50%, 0.1);
+  color: var(--status-verified);
+}
+
+.action-badge--user_created {
+  background: hsla(192, 100%, 55%, 0.1);
+  color: var(--sentinel-cyan);
+}
+
+.action-badge--role_changed {
+  background: hsla(260, 80%, 60%, 0.1);
+  color: hsl(260, 80%, 65%);
+}
+
+.action-badge--mfa_enabled {
+  background: hsla(145, 70%, 50%, 0.1);
+  color: var(--status-verified);
+}
+
+.action-badge--session_expired {
+  background: hsla(210, 10%, 65%, 0.1);
+  color: var(--smoke);
+}
+
+.export-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-2) 0;
+}
