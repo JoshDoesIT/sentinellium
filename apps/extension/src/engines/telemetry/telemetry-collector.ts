@@ -10,35 +10,35 @@
 
 /** Telemetry event category. */
 export enum TelemetryCategory {
-    SCAN = "SCAN",
-    DETECTION = "DETECTION",
-    BLOCK = "BLOCK",
-    PERFORMANCE = "PERFORMANCE",
-    ERROR = "ERROR",
+  SCAN = "SCAN",
+  DETECTION = "DETECTION",
+  BLOCK = "BLOCK",
+  PERFORMANCE = "PERFORMANCE",
+  ERROR = "ERROR",
 }
 
 /** A raw telemetry event before timestamping. */
 export interface TelemetryEvent {
-    category: TelemetryCategory;
-    action: string;
-    engine: string;
-    metadata?: Record<string, unknown>;
+  category: TelemetryCategory;
+  action: string;
+  engine: string;
+  metadata?: Record<string, unknown>;
 }
 
 /** A recorded telemetry event with timestamp. */
 export interface RecordedEvent extends TelemetryEvent {
-    timestamp: number;
+  timestamp: number;
 }
 
 /** Analytics gate interface (subset of createAnalytics return). */
 interface AnalyticsGate {
-    isOptedIn: () => Promise<boolean>;
+  isOptedIn: () => Promise<boolean>;
 }
 
 /** Collector configuration. */
 interface CollectorConfig {
-    analytics: AnalyticsGate;
-    maxQueueSize: number;
+  analytics: AnalyticsGate;
+  maxQueueSize: number;
 }
 
 /* ── Collector ── */
@@ -49,50 +49,50 @@ interface CollectorConfig {
  * Queue is bounded to prevent unbounded memory growth.
  */
 export class TelemetryCollector {
-    private readonly config: CollectorConfig;
-    private readonly queue: RecordedEvent[] = [];
+  private readonly config: CollectorConfig;
+  private readonly queue: RecordedEvent[] = [];
 
-    constructor(config: CollectorConfig) {
-        this.config = config;
+  constructor(config: CollectorConfig) {
+    this.config = config;
+  }
+
+  /** Number of pending events in the queue. */
+  get pendingCount(): number {
+    return this.queue.length;
+  }
+
+  /**
+   * Record a telemetry event.
+   * Silently drops the event if analytics is opted out.
+   * Drops oldest events when queue exceeds max size.
+   *
+   * @param event - Event to record
+   */
+  async record(event: TelemetryEvent): Promise<void> {
+    const optedIn = await this.config.analytics.isOptedIn();
+    if (!optedIn) return;
+
+    const recorded: RecordedEvent = {
+      ...event,
+      timestamp: Date.now(),
+    };
+
+    this.queue.push(recorded);
+
+    while (this.queue.length > this.config.maxQueueSize) {
+      this.queue.shift();
     }
+  }
 
-    /** Number of pending events in the queue. */
-    get pendingCount(): number {
-        return this.queue.length;
-    }
-
-    /**
-     * Record a telemetry event.
-     * Silently drops the event if analytics is opted out.
-     * Drops oldest events when queue exceeds max size.
-     *
-     * @param event - Event to record
-     */
-    async record(event: TelemetryEvent): Promise<void> {
-        const optedIn = await this.config.analytics.isOptedIn();
-        if (!optedIn) return;
-
-        const recorded: RecordedEvent = {
-            ...event,
-            timestamp: Date.now(),
-        };
-
-        this.queue.push(recorded);
-
-        while (this.queue.length > this.config.maxQueueSize) {
-            this.queue.shift();
-        }
-    }
-
-    /**
-     * Drain all pending events from the queue.
-     * Returns a copy and clears the internal queue.
-     *
-     * @returns All pending recorded events
-     */
-    drain(): RecordedEvent[] {
-        const events = [...this.queue];
-        this.queue.length = 0;
-        return events;
-    }
+  /**
+   * Drain all pending events from the queue.
+   * Returns a copy and clears the internal queue.
+   *
+   * @returns All pending recorded events
+   */
+  drain(): RecordedEvent[] {
+    const events = [...this.queue];
+    this.queue.length = 0;
+    return events;
+  }
 }
