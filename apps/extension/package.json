@@ -15,6 +15,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@sentinellium/engines": "workspace:*",
     "@sentinellium/types": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

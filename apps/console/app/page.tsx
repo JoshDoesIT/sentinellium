@@ -1,102 +1,218 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
+import Link from "next/link";
+import {
+  fetchDashboard,
+  fetchAlerts,
+  fetchTimeline,
+  relativeTime,
+  ENGINE_HEALTH_MAP,
+  type AlertSeverity,
+} from "./lib/api";
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
+/**
+ * @module Overview Dashboard
+ * @description SOC command center — hero metrics, engine health,
+ * threat sparkline, severity breakdown, recent alerts.
+ *
+ * This page fetches real data from the Sentinellium API at render time.
+ */
+
+const SEVERITY_COLORS: Record<string, string> = {
+  CRITICAL: "var(--severity-critical)",
+  HIGH: "var(--severity-high)",
+  MEDIUM: "var(--severity-medium)",
+  LOW: "var(--severity-low)",
+  INFO: "var(--sentinel-cyan)",
 };
 
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
+export default async function OverviewPage() {
+  const [dashboard, alertsResult, timelineData] = await Promise.all([
+    fetchDashboard(),
+    fetchAlerts({ pageSize: 5 }),
+    fetchTimeline(),
+  ]);
 
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
+  const recent = alertsResult.items;
+  const buckets = timelineData.buckets;
+  const maxBucket = Math.max(...buckets.map((b) => b.count), 1);
+
+  // Build engine health cards from API engine state
+  const engineCards = Object.entries(dashboard.engines).map(
+    ([key, status]) => ({
+      key,
+      name: ENGINE_HEALTH_MAP[key]?.name ?? key,
+      description: ENGINE_HEALTH_MAP[key]?.description ?? "",
+      status,
+    }),
   );
-};
 
-export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className={styles.overview}>
+      <header className="page-header">
+        <h1 className="page-header__title">Threat Overview</h1>
+        <p className="page-header__subtitle">
+          Real-time security posture across all engines
+        </p>
+      </header>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* ── Hero Metrics ── */}
+      <section className={styles.metrics}>
+        <div className={`card ${styles.metric}`}>
+          <span className={styles.metric__label}>Total Alerts</span>
+          <span
+            className={`${styles.metric__value} ${styles["metric__value--cyan"]}`}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+            {dashboard.totalAlerts}
+          </span>
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
-      </footer>
+        <div className={`card ${styles.metric}`}>
+          <span className={styles.metric__label}>Threats Blocked</span>
+          <span
+            className={`${styles.metric__value} ${styles["metric__value--green"]}`}
+          >
+            {dashboard.threatsBlocked}
+          </span>
+        </div>
+        <div className={`card ${styles.metric}`}>
+          <span className={styles.metric__label}>Pages Scanned</span>
+          <span
+            className={`${styles.metric__value} ${styles["metric__value--white"]}`}
+          >
+            {dashboard.pagesScanned.toLocaleString()}
+          </span>
+        </div>
+        <div className={`card ${styles.metric}`}>
+          <span className={styles.metric__label}>Fleet Online</span>
+          <span
+            className={`${styles.metric__value} ${styles["metric__value--blue"]}`}
+          >
+            {dashboard.connectedInstances}
+          </span>
+        </div>
+      </section>
+
+      {/* ── Engine Health + Sparkline ── */}
+      <section className={styles["grid-2"]}>
+        <div className="card">
+          <div className={styles["engine-list"]}>
+            {engineCards.map((engine) => (
+              <div key={engine.key} className={styles["engine-card"]}>
+                <div className={styles["engine-card__info"]}>
+                  <div className={styles["engine-card__name"]}>
+                    {engine.name}
+                  </div>
+                  <div className={styles["engine-card__desc"]}>
+                    {engine.description}
+                  </div>
+                </div>
+                <div className={styles["engine-card__status"]}>
+                  <span
+                    className={`status-dot ${
+                      engine.status === "ACTIVE"
+                        ? "status-dot--active"
+                        : engine.status === "ERROR"
+                          ? "status-dot--error"
+                          : "status-dot--inactive"
+                    }`}
+                  />
+                  {engine.status}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={`card ${styles["spark-section"]}`}>
+          <span className={styles["spark-section__title"]}>
+            Threat Activity (24h)
+          </span>
+          <div className={styles.sparkline}>
+            {buckets.map((bucket, i) => (
+              <div
+                key={i}
+                className={styles.sparkline__bar}
+                style={{
+                  height: `${Math.max((bucket.count / maxBucket) * 100, 3)}%`,
+                  animationDelay: `${i * 20}ms`,
+                }}
+                title={`${bucket.count} alerts`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Severity Breakdown + Recent ── */}
+      <section className={styles["grid-2"]}>
+        <div className={`card ${styles["severity-section"]}`}>
+          <span className={styles["severity-section__title"]}>
+            Severity Distribution
+          </span>
+          <div className={styles["severity-bars"]}>
+            {(
+              ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"] as AlertSeverity[]
+            ).map((sev) => {
+              const count = dashboard.severityCounts[sev] ?? 0;
+              const total = dashboard.totalAlerts || 1;
+              const pct = (count / total) * 100;
+              return (
+                <div key={sev} className={styles["severity-row"]}>
+                  <span className={styles["severity-row__label"]}>
+                    <span className={`badge badge--${sev.toLowerCase()}`}>
+                      {sev}
+                    </span>
+                  </span>
+                  <div className={styles["severity-row__bar-track"]}>
+                    <div
+                      className={styles["severity-row__bar-fill"]}
+                      style={{
+                        width: `${pct}%`,
+                        background: SEVERITY_COLORS[sev],
+                      }}
+                    />
+                  </div>
+                  <span className={styles["severity-row__count"]}>{count}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className={`card ${styles["recent-section"]}`}>
+          <div className={styles["recent-section__header"]}>
+            <span className={styles["recent-section__title"]}>
+              Recent Alerts
+            </span>
+            <Link href="/alerts" className="btn btn--ghost">
+              View all →
+            </Link>
+          </div>
+          <div className={styles["recent-list"]}>
+            {recent.map((alert, i) => (
+              <div
+                key={alert.id}
+                className={styles["recent-item"]}
+                style={{ animationDelay: `${i * 60}ms` }}
+              >
+                <span
+                  className={`badge badge--${alert.severity.toLowerCase()}`}
+                >
+                  {alert.severity}
+                </span>
+                <span className={styles["recent-item__title"]}>
+                  {alert.title}
+                </span>
+                <span className={styles["recent-item__domain"]}>
+                  {alert.domain}
+                </span>
+                <span className={styles["recent-item__time"]}>
+                  {relativeTime(alert.timestamp)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

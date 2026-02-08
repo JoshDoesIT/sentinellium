@@ -1,0 +1,114 @@
+.geo-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Top Regions ── */
+.top-regions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.top-region {
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-left: 3px solid var(--sentinel-cyan-dim);
+}
+
+.top-region__rank {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--smoke);
+}
+
+.top-region__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  color: var(--sentinel-white);
+}
+
+.top-region__count {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-variant-numeric: tabular-nums;
+  color: var(--sentinel-cyan);
+}
+
+.top-region__pct {
+  font-size: var(--text-xs);
+  color: var(--ash);
+}
+
+/* ── Heatmap Table ── */
+.heatmap-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.heatmap-section__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--sentinel-white);
+}
+
+.heatmap-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+.heatmap-row__ordinal {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--smoke);
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.heatmap-row__region {
+  width: 120px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--sentinel-white);
+  flex-shrink: 0;
+}
+
+.heatmap-row__bar-track {
+  flex: 1;
+  height: 12px;
+  background: hsla(210, 20%, 95%, 0.04);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.heatmap-row__bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--gradient-threat);
+  animation: bar-grow var(--duration-normal) var(--ease-out) both;
+  transform-origin: left;
+}
+
+.heatmap-row__count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ash);
+  width: 32px;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .top-regions {
+    grid-template-columns: 1fr;
+  }
+}

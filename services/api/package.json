@@ -12,7 +12,9 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@hono/node-server": "^1.13.0",
     "@hono/zod-validator": "^0.4.0",
+    "@sentinellium/engines": "workspace:*",
     "@sentinellium/types": "workspace:*",
     "hono": "^4.7.0",
     "zod": "^3.24.0"
