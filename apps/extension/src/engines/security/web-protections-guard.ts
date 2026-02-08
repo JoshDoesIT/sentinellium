@@ -89,10 +89,9 @@ export class WebProtectionsGuard {
    * @returns Sanitized HTML
    */
   sanitize(html: string): string {
-    return html
-      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-      .replace(/\s*on\w+\s*=\s*"[^"]*"/gi, "")
-      .replace(/\s*on\w+\s*=\s*'[^']*'/gi, "");
+    // Encode angle brackets to HTML entities to neutralize all tags
+    // and event handlers. This is safer than regex-based stripping.
+    return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
   /* ── Security Headers ── */

@@ -59,22 +59,26 @@ describe("WebProtectionsGuard", () => {
   /* ── XSS ── */
 
   describe("sanitize", () => {
-    it("strips script tags", () => {
+    it("neutralizes script tags via entity encoding", () => {
       const dirty = '<p>hello</p><script>alert("xss")</script>';
       const clean = guard.sanitize(dirty);
       expect(clean).not.toContain("<script>");
-      expect(clean).toContain("<p>hello</p>");
+      expect(clean).toContain("hello");
     });
 
-    it("strips event handlers", () => {
+    it("neutralizes event handlers", () => {
       const dirty = '<img src="x" onerror="alert(1)">';
       const clean = guard.sanitize(dirty);
-      expect(clean).not.toContain("onerror");
+      expect(clean).not.toContain("<img");
+      expect(clean).toContain("&lt;img");
     });
 
-    it("preserves safe HTML", () => {
-      const safe = "<p>Hello <strong>world</strong></p>";
-      expect(guard.sanitize(safe)).toBe(safe);
+    it("encodes all angle brackets for safety", () => {
+      const input = "<p>Hello <strong>world</strong></p>";
+      const clean = guard.sanitize(input);
+      expect(clean).not.toContain("<p>");
+      expect(clean).toContain("Hello");
+      expect(clean).toContain("world");
     });
   });
 
