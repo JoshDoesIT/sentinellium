@@ -74,7 +74,7 @@ export default defineContentScript({
         if (
           text.includes("http") &&
           href.startsWith("http") &&
-          !href.includes(text.replace(/https?:\/\//, "").split("/")[0])
+          !href.includes(text.replace(/https?:\/\//, "").split("/")[0] ?? "")
         ) {
           linkMismatchCount++;
         }

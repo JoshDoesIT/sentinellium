@@ -147,7 +147,7 @@ describe("C2PA Handler", () => {
     it("includes the media URL in each verdict", () => {
       const result = handleC2paScan(newsPageRequest);
       if (result.mediaResults.length > 0) {
-        expect(result.mediaResults[0].url).toBe(
+        expect(result.mediaResults[0]!.url).toBe(
           "https://cnn.com/images/hero.jpg",
         );
       }
