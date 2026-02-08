@@ -9,7 +9,11 @@
  * - onSuspend: Persist state before idle shutdown
  */
 import { createStorage, StorageArea } from "@/src/storage/storage";
-import { createMessageBus, MessageType, sendToTab } from "@/src/messaging/messages";
+import {
+  createMessageBus,
+  MessageType,
+  sendToTab,
+} from "@/src/messaging/messages";
 import { getCapabilityReport } from "@/src/capabilities/gpu-detect";
 import { setBadgeState, BadgeState } from "@/src/ui/badge";
 import { handleScan } from "@/src/engines/phishing/scan-handler";

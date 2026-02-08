@@ -13,7 +13,10 @@
  */
 import { createDOMObserver } from "@/src/content/dom-observer";
 import { sendMessage, onMessage, MessageType } from "@/src/messaging/messages";
-import { WarningOverlay, OverlaySeverity } from "@/src/engines/phishing/warning-overlay";
+import {
+  WarningOverlay,
+  OverlaySeverity,
+} from "@/src/engines/phishing/warning-overlay";
 import { handleDlpScan } from "@/src/engines/dlp/dlp-handler";
 import { InterventionUi } from "@/src/engines/dlp/intervention-ui";
 import { handleC2paScan } from "@/src/engines/c2pa/c2pa-handler";
@@ -210,7 +213,9 @@ export default defineContentScript({
             domain,
             platform: result.platform ?? "Unknown LLM",
             piiSummary: Object.entries(piiSummary).map(([type, count]) => ({
-              type: type as Parameters<typeof interventionUi.buildModal>[0]["piiSummary"][0]["type"],
+              type: type as Parameters<
+                typeof interventionUi.buildModal
+              >[0]["piiSummary"][0]["type"],
               count: count as number,
             })),
           });
@@ -263,10 +268,8 @@ export default defineContentScript({
       // Flag unverified media in high-stakes contexts
       result.mediaResults.forEach((mediaVerdict) => {
         if (mediaVerdict.shouldFlag) {
-          const filename =
-            mediaVerdict.url.split("/").pop() ?? "unknown media";
-          const indicatorHtml =
-            unverifiedFlagger.buildIndicatorHtml(filename);
+          const filename = mediaVerdict.url.split("/").pop() ?? "unknown media";
+          const indicatorHtml = unverifiedFlagger.buildIndicatorHtml(filename);
 
           // Find the matching image element and inject indicator
           const matchingImg = document.querySelector(
@@ -299,4 +302,3 @@ export default defineContentScript({
     });
   },
 });
-
