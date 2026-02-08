@@ -9,9 +9,14 @@
  * - onSuspend: Persist state before idle shutdown
  */
 import { createStorage, StorageArea } from "@/src/storage/storage";
-import { createMessageBus, MessageType } from "@/src/messaging/messages";
+import {
+  createMessageBus,
+  MessageType,
+  sendToTab,
+} from "@/src/messaging/messages";
 import { getCapabilityReport } from "@/src/capabilities/gpu-detect";
 import { setBadgeState, BadgeState } from "@/src/ui/badge";
+import { handleScan } from "@/src/engines/phishing/scan-handler";
 
 /** Engine state persisted in chrome.storage.local. */
 interface EngineState {
@@ -107,6 +112,46 @@ export default defineBackground(() => {
       }
     },
   );
+
+  // Handle phishing scan requests from content scripts
+  bus.on<{
+    url: string;
+    title: string;
+    timestamp: number;
+    domSignals?: {
+      hasPasswordForm: boolean;
+      hasCreditCardForm: boolean;
+      linkMismatchCount: number;
+      brandDomainMismatch: boolean;
+      urgencySignals: number;
+    };
+    pageText?: string;
+  }>(MessageType.SCAN_REQUEST, async (payload, sender) => {
+    const state = await engineStorage.get();
+    if (!state.phishingEnabled) return;
+
+    const tabId = sender.tab?.id;
+    if (!tabId) return;
+
+    try {
+      const verdict = handleScan(payload);
+
+      // Update badge based on threat level
+      if (verdict.shouldWarn) {
+        await setBadgeState(BadgeState.THREAT_DETECTED);
+      } else {
+        await setBadgeState(BadgeState.SCANNING);
+      }
+
+      // Update last scan timestamp
+      await engineStorage.set({ lastScanTimestamp: Date.now() });
+
+      // Send result back to the content script for overlay
+      await sendToTab(tabId, MessageType.SCAN_RESULT, verdict);
+    } catch (error) {
+      console.error("Scan pipeline error:", error);
+    }
+  });
 
   console.log("Sentinellium service worker loaded", {
     id: browser.runtime.id,
