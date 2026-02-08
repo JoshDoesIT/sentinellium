@@ -287,12 +287,16 @@ export function detectIpUrl(hostname: string): DetectionResult {
 }
 
 /**
- * Detect dangerous URI schemes (javascript:, data:).
+ * Detect dangerous URI schemes (javascript:, vbscript:, data:).
  */
 export function detectDangerousScheme(url: string): DetectionResult {
   const lower = url.toLowerCase().trim();
 
   if (lower.startsWith("javascript:")) {
+    return { detected: true, score: 50 };
+  }
+
+  if (lower.startsWith("vbscript:")) {
     return { detected: true, score: 50 };
   }
 
@@ -316,7 +320,7 @@ export function analyzeUrl(rawUrl: string): UrlAnalysisResult {
   const signals: string[] = [];
   let totalScore = 0;
 
-  // Check dangerous schemes first (javascript:, data:)
+  // Check dangerous schemes first (javascript:, vbscript:, data:)
   const schemeResult = detectDangerousScheme(rawUrl);
   if (schemeResult.detected) {
     signals.push("dangerous_scheme");

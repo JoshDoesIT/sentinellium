@@ -214,5 +214,16 @@ describe("URL Analyzer", () => {
       const result = detectDangerousScheme("JAVASCRIPT:void(0)");
       expect(result.detected).toBe(true);
     });
+
+    it("flags vbscript: URIs", () => {
+      const result = detectDangerousScheme("vbscript:MsgBox('XSS')");
+      expect(result.detected).toBe(true);
+      expect(result.score).toBeGreaterThan(0);
+    });
+
+    it("flags case-insensitive vbscript: URIs", () => {
+      const result = detectDangerousScheme("VBSCRIPT:MsgBox('XSS')");
+      expect(result.detected).toBe(true);
+    });
   });
 });
